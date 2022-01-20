@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 class RegisterForm extends Component {
   render() {
+    console.log(this.props)
     return (
       <div>
         <form action="">
