@@ -25,12 +25,13 @@ const registerValidation = (req, res, next) => {
     !req.body.name ||
     !req.body.password ||
     !req.body.email ||
-    !req.body.numberOfChildren
+    !req.body.numberOfChildren ||
+    !req.body.ChildrenAgeGroup
   ) {
     res
       .status(400)
       .send(
-        "Please make sure to include username, name, password, email and number of children in the form."
+        "Please make sure to include username, name, password, email, number of children and children age group in the form."
       );
   } else {
     next();
@@ -38,7 +39,14 @@ const registerValidation = (req, res, next) => {
 };
 
 authRoutes.post("/register", registerValidation, (req, res) => {
-  const { username, name, password, email, numberOfChildren } = req.body;
+  const {
+    username,
+    name,
+    password,
+    email,
+    numberOfChildren,
+    ChildrenAgeGroup,
+  } = req.body;
   const usersData = readData();
 
   const newUser = {
