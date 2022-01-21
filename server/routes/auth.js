@@ -9,44 +9,47 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 //to read from users.json
 const readData = () => {
-  const videosData = fs.readFileSync("./data/auth.json");
-  return JSON.parse(videosData);
+  const usersData = fs.readFileSync("./data/auth.json");
+  return JSON.parse(usersData);
 };
 
 // to write to videos.json
-const writeFile = (videosData) => {
-  fs.writeFileSync("./data/auth.json", JSON.stringify(videosData));
+const writeFile = (usersData) => {
+  fs.writeFileSync("./data/auth.json", JSON.stringify(usersData));
 };
 
 // check we have all required fields
 const registerValidation = (req, res, next) => {
+  console.log("registerValidation");
+  const usersData = readData();
+  const username = usersData.find(
+    (user) => user.username === req.body.username
+  );
   if (
     !req.body.username ||
-    !req.body.name ||
     !req.body.password ||
-    !req.body.email ||
+    !req.body.name ||
     !req.body.numberOfChildren ||
-    !req.body.ChildrenAgeGroup
+    !req.body.childrenAgeGroup
   ) {
     res
       .status(400)
       .send(
         "Please make sure to include username, name, password, email, number of children and children age group in the form."
       );
+  }
+  if (username) {
+    res.status(400).send("Username already exists, enter other username.");
   } else {
     next();
   }
 };
 
 authRoutes.post("/register", registerValidation, (req, res) => {
-  const {
-    username,
-    name,
-    password,
-    email,
-    numberOfChildren,
-    ChildrenAgeGroup,
-  } = req.body;
+  console.log("registerEndpointReached");
+
+  const { username, password, name, numberOfChildren, ChildrenAgeGroup } =
+    req.body;
   const usersData = readData();
 
   const newUser = {
@@ -54,8 +57,8 @@ authRoutes.post("/register", registerValidation, (req, res) => {
     username: username,
     name: name,
     password: password,
-    email: email,
     numberOfChildren: numberOfChildren,
+    ChildrenAgeGroup: ChildrenAgeGroup,
   };
   usersData.push(newUser);
   //   update usersData so that user information is added
