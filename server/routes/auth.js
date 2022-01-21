@@ -47,8 +47,9 @@ const registerValidation = (req, res, next) => {
 
 authRoutes.post("/register", registerValidation, (req, res) => {
   console.log("registerEndpointReached");
+  console.log(req.body.childrenAgeGroup);
 
-  const { username, password, name, numberOfChildren, ChildrenAgeGroup } =
+  const { username, password, name, numberOfChildren, childrenAgeGroup } =
     req.body;
   const usersData = readData();
 
@@ -58,7 +59,7 @@ authRoutes.post("/register", registerValidation, (req, res) => {
     name: name,
     password: password,
     numberOfChildren: numberOfChildren,
-    ChildrenAgeGroup: ChildrenAgeGroup,
+    childrenAgeGroup: childrenAgeGroup,
   };
   usersData.push(newUser);
   //   update usersData so that user information is added

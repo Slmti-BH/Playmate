@@ -9,22 +9,25 @@ class SignInForm extends Component {
   //   errorMessage: "",
   // };
 
-  // on form submit  isLoggedIn=true
+  
 
   render() {
     console.log(this.props);
     return (
       <div>
-        <form action="">
-          <input type="text" placeholder="User name" />
-          <input type="text" placeholder="password" />
-          <Link to="/profile">
-            <button type="submit">Login</button>
+        <form
+          
+          onSubmit={this.props.handleSignInSubmit}
+        >
+          <input name="username" type="text" placeholder="User name" />
+          <input name="password" type="text" placeholder="password" />
+
+          <button type="submit">Login</button>
+
+          <Link to="/register">
+            <button type="submit">Register</button>
           </Link>
         </form>
-        <Link to="/register">
-          <button type="submit"> register</button>
-        </Link>
       </div>
     );
   }
