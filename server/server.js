@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
-const cors=require("cors");
-const authRoutes=require("./routes/auth")
+const cors = require("cors");
+const authRoutes = require("./routes/auth");
+const mapRoutes = require("./routes/map");
 // to make .env files available
 require("dotenv").config();
 const PORT = process.env.PORT || 6060;
@@ -14,7 +15,8 @@ app.use(
 );
 app.use(express.json());
 
-app.use("/auth",authRoutes);
+app.use("/auth", authRoutes);
+app.use("/map", mapRoutes);
 
 app.listen(PORT, () => {
   console.log("🚀 Listening on 8080");

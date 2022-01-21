@@ -83,9 +83,18 @@ authRoutes.post("/sign-in", (req, res) => {
   if (user.password !== password) {
     return res.status(401).send("Please enter correct password.");
   } else {
-    const token = jwt.sign({ name: user.name }, JWT_SECRET, {
-      expiresIn: "8h",
-    });
+    const token = jwt.sign(
+      {
+        name: user.name,
+        user: user.username,
+        numberOfChildren: user.numberOfChildren,
+        childrenAgeGroup: user.childrenAgeGroup,
+      },
+      JWT_SECRET,
+      {
+        expiresIn: "8h",
+      }
+    );
 
     res.json({ token });
   }
