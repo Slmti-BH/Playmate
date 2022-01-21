@@ -44,6 +44,17 @@ const authorize = (req, res, next) => {
   });
 };
 
+// get all map data specific to user
+mapRoutes.get("/:username", (req, res) => {
+  const mapData = readData();
+  const userMapData = mapData.filter(
+    (data) => data.username !== req.params.username
+  );
+  if (!userMapData.length) {
+    return res.status(404).send("No users found.");
+  }
+  res.status(200).json(userMapData);
+});
 // validation middleware
 const Validation = (req, res, next) => {
   if (
@@ -78,8 +89,16 @@ const cleanUp = (req, res, next) => {
   }
 };
 mapRoutes.post("/", Validation, cleanUp, (req, res) => {
-  const { lnt, lat, username, name, numberOfChildren, childrenAgeGroup } =
-    req.body;
+  const {
+    lnt,
+    lat,
+    username,
+    name,
+    numberOfChildren,
+    childrenAgeGroup,
+    address,
+    notes,
+  } = req.body;
   const mapData = readData();
 
   const newData = {
@@ -90,6 +109,8 @@ mapRoutes.post("/", Validation, cleanUp, (req, res) => {
     childrenAgeGroup: childrenAgeGroup,
     lnt: lnt,
     lat: lat,
+    address: address,
+    notes: notes,
   };
 
   mapData.push(newData);
