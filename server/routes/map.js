@@ -57,12 +57,13 @@ mapRoutes.get("/:username", (req, res) => {
 });
 // validation middleware
 const Validation = (req, res, next) => {
+  console.log(req.body);
   if (
     !req.body.username ||
     !req.body.name ||
     !req.body.numberOfChildren ||
     !req.body.childrenAgeGroup ||
-    !req.body.lnt ||
+    !req.body.lng ||
     !req.body.lat
   ) {
     res
@@ -90,7 +91,7 @@ const cleanUp = (req, res, next) => {
 };
 mapRoutes.post("/", Validation, cleanUp, (req, res) => {
   const {
-    lnt,
+    lng,
     lat,
     username,
     name,
@@ -107,7 +108,7 @@ mapRoutes.post("/", Validation, cleanUp, (req, res) => {
     name: name,
     numberOfChildren: numberOfChildren,
     childrenAgeGroup: childrenAgeGroup,
-    lnt: lnt,
+    lng: lng,
     lat: lat,
     address: address,
     notes: notes,
@@ -129,13 +130,16 @@ mapRoutes.delete("/:username", (req, res) => {
     return res.status(404).send("The user is not found.");
   }
 
-  const filteredMapData = mapData.filter((data) => {
-    data.username !== req.params.username;
-  });
+  const filteredMapData = mapData.filter(
+    (data) => data.username !== req.params.username
+  );
 
   writeFile(filteredMapData);
-  // res.status(204).send("user deleted");
-  res.status(204).json(user.username);
+  console.log(req.params.username);
+  console.log(filteredMapData);
+
+  res.status(204).send("user deleted");
+  // res.status(204).json(user.username);
 });
 
 module.exports = mapRoutes;
