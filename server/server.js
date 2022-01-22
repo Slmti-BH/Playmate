@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 6060;
 
 // create ws server
 const wss = new WebSocket.Server({ server: server });
-WebSockets = {};
+const webSockets = {};
 
 // cors middle ware to allow access to requests from client URL
 app.use(
@@ -25,7 +25,7 @@ app.use(express.json());
 // wscat -c ws://localhost:5000/1
 wss.on("connection", function (webSocket, request) {
   // console.log(WebSocket);
-  var userID = parseInt(request.url.substr(1), 10);
+ const userID = url.parse(request.url, true).query.userId;
   webSockets[userID] = webSocket;
 
   console.log(
@@ -41,15 +41,17 @@ wss.on("connection", function (webSocket, request) {
   // [fromUserID, text]    [1, "Hello, World!"]
   webSocket.on("message", function (message) {
     console.log("received from " + userID + ": " + message);
-    var messageArray = JSON.parse(message);
-    var toUserWebSocket = webSockets[messageArray[0]];
-    if (toUserWebSocket) {
-      console.log(
-        "sent to " + messageArray[0] + ": " + JSON.stringify(messageArray)
-      );
-      messageArray[0] = userID;
-      toUserWebSocket.send(JSON.stringify(messageArray));
-    }
+    const objectSentFromClient = JSON.parse(message);
+   const toUserWebSocket = webSockets[objectSentFromClient.receiverUserId];
+     if (toUserWebSocket) {
+       const messageToBeSent = JSON.stringify({
+         senderUserId: userID,
+         youCanAddAnythingHere: "this is a normal object",
+         anotherArbitraryData: 1231232,
+       });
+
+       toUserWebSocket.send(messageToBeSent);
+     }
   });
 
   webSocket.on("close", function () {

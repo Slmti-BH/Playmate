@@ -85,6 +85,7 @@ authRoutes.post("/sign-in", (req, res) => {
   } else {
     const token = jwt.sign(
       {
+        id: user.id,
         name: user.name,
         username: user.username,
         numberOfChildren: user.numberOfChildren,
