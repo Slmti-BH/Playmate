@@ -29,11 +29,18 @@ class ProfilePage extends Component {
       })
       .then((response) => {
         // Create WebSocket connection.
-        const socket = new WebSocket("ws://localhost:8080");
+        const socket = new WebSocket(
+          `ws://localhost:8080?userId=${this.state.userInfo.id}`
+        );
 
         // Connection opened
         socket.addEventListener("open", function (event) {
-          socket.send("Hello Server!");
+          socket.send(
+            JSON.stringify({
+              receiverUserId: "user-id-of-the-receiver",
+              myRandomMessage: "randomMessage",
+            })
+          );
         });
 
         // Listen for messages
