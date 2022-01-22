@@ -24,16 +24,11 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "lsof": "^0.1.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "ws": "^8.4.2"
   },
   "devDependencies": {
     "dotenv": "^14.2.0",
     "nodemon": "^2.0.15"
-  },
-  "nodemonConfig": {
-    "ignore": [
-      "server/*",
-      "./package.json"
-    ]
   }
 }

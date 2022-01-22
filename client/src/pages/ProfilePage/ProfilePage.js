@@ -25,6 +25,21 @@ class ProfilePage extends Component {
           isLoading: false,
           userInfo: response.data,
         });
+        return response;
+      })
+      .then((response) => {
+        // Create WebSocket connection.
+        const socket = new WebSocket("ws://localhost:8080");
+
+        // Connection opened
+        socket.addEventListener("open", function (event) {
+          socket.send("Hello Server!");
+        });
+
+        // Listen for messages
+        socket.addEventListener("message", function (event) {
+          console.log("Message from server ", event.data);
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -32,6 +47,12 @@ class ProfilePage extends Component {
         this.props.history.push("/");
       });
   }
+
+  join = (e) => {
+    e.preventDefault();
+    document.location.href = "/";
+    // instead send invite to user on map marker
+  };
   handleSignOut = (e) => {
     e.preventDefault();
     //  delete map data for user
@@ -53,7 +74,7 @@ class ProfilePage extends Component {
       <div>
         <h1>Hello {userInfo.name}</h1>
         <button onClick={this.handleSignOut}>sign out</button>
-        <Map userInfo={this.state.userInfo} />
+        <Map handleJoin={this.join} userInfo={this.state.userInfo} />
       </div>
     );
   }

@@ -1,7 +1,10 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
+import Popup from "../Popup/Popup";
+import ReactDOM from "react-dom";
 
 mapboxgl.accessToken =
   "pk.eyJ1Ijoic2VsYW1hd2l0LWhhaWxlbWFyaWFtIiwiYSI6ImNreWt2ZXdnZzI2aGgyd3Focjc5MDV3NHIifQ.d734Xg2hfTeIcZkjR5MTaA";
@@ -15,6 +18,11 @@ class Map extends Component {
   };
 
   componentDidMount() {
+    const popCard = document.createElement("div");
+    popCard.className = "popup-container";
+
+    ReactDOM.render(<Popup />, popCard);
+
     // display map
     const map = new mapboxgl.Map({
       container: this.mapContainer,
@@ -66,11 +74,10 @@ class Map extends Component {
           const marker = new mapboxgl.Marker()
             .setLngLat([element.lng, element.lat])
             .setPopup(
-              new mapboxgl.Popup({ offset: 30 }).setHTML(
-                `<h1>${element.address}</h1>
-             <h2>${element.name}</h2>
-            <h3>${element.notes}</h3>`
-              )
+              new mapboxgl.Popup({
+                closeOnClick: false,
+                offset: 30,
+              }).setDOMContent(popCard)
             )
             .addTo(map);
         });
