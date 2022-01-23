@@ -1,0 +1,17 @@
+// add font-face rule for page
+
+@font-face {
+  font-family: "avenir";
+  src: url("../../assets/fonts/AvenirNextLTPro-Bold.woff2") format("woff2"),
+    url("../../assets/fonts/AvenirNextLTPro-Bold.woff") format("woff"),
+    url("../../assets/fonts/AvenirNextLTProBold.ttf") format("TrueType");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "avenir";
+  src: url("../../assets/fonts/AvenirNextLTPro-Regular.woff2") format("woff2"),
+    url("../../assets/fonts/AvenirNextLTPro-Regular.woff") format("woff"),
+    url("../../assets/fonts/AvenirNextLTPro.ttf") format("TrueType");
+  font-weight: 400;
+}

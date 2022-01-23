@@ -25,29 +25,29 @@ class ProfilePage extends Component {
           isLoading: false,
           userInfo: response.data,
         });
-        return response;
+        // return response;
       })
-      .then((response) => {
-        // Create WebSocket connection.
-        const socket = new WebSocket(
-          `ws://localhost:8080?userId=${this.state.userInfo.id}`
-        );
+      // .then((response) => {
+      //   // Create WebSocket connection.
+      //   const socket = new WebSocket(
+      //     `ws://localhost:8080?userId=${this.state.userInfo.id}`
+      //   );
 
-        // Connection opened
-        socket.addEventListener("open", function (event) {
-          socket.send(
-            JSON.stringify({
-              receiverUserId: "user-id-of-the-receiver",
-              myRandomMessage: "randomMessage",
-            })
-          );
-        });
+      //   // Connection opened
+      //   socket.addEventListener("open", function (event) {
+      //     socket.send(
+      //       JSON.stringify({
+      //         receiverUserId: "user-id-of-the-receiver",
+      //         myRandomMessage: "randomMessage",
+      //       })
+      //     );
+      //   });
 
-        // Listen for messages
-        socket.addEventListener("message", function (event) {
-          console.log("Message from server ", event.data);
-        });
-      })
+      //   // Listen for messages
+      //   socket.addEventListener("message", function (event) {
+      //     console.log("Message from server ", event.data);
+      //   });
+      // })
       .catch((err) => {
         console.log(err);
         // on error redirect to home page

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import SignInForm from "../../components/SignInForm/SignInForm";
+import "./HomePage.scss";
 
 class Homepage extends Component {
   state = {

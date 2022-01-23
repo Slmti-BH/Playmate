@@ -21,44 +21,44 @@ app.use(
 );
 app.use(express.json());
 
-// CONNECT /:userID
-// wscat -c ws://localhost:5000/1
-wss.on("connection", function (webSocket, request) {
-  // console.log(WebSocket);
- const userID = url.parse(request.url, true).query.userId;
-  webSockets[userID] = webSocket;
+// // CONNECT /:userID
+// // wscat -c ws://localhost:5000/1
+// wss.on("connection", function (webSocket, request) {
+//   // console.log(WebSocket);
+//  const userID = url.parse(request.url, true).query.userId;
+//   webSockets[userID] = webSocket;
 
-  console.log(
-    "connected: " + userID + " in " + Object.getOwnPropertyNames(webSockets)
-  );
+//   console.log(
+//     "connected: " + userID + " in " + Object.getOwnPropertyNames(webSockets)
+//   );
 
-  // Forward Message
-  //
-  // Receive               Example
-  // [toUserID, text]      [2, "Hello, World!"]
-  //
-  // Send                  Example
-  // [fromUserID, text]    [1, "Hello, World!"]
-  webSocket.on("message", function (message) {
-    console.log("received from " + userID + ": " + message);
-    const objectSentFromClient = JSON.parse(message);
-   const toUserWebSocket = webSockets[objectSentFromClient.receiverUserId];
-     if (toUserWebSocket) {
-       const messageToBeSent = JSON.stringify({
-         senderUserId: userID,
-         youCanAddAnythingHere: "this is a normal object",
-         anotherArbitraryData: 1231232,
-       });
+//   // Forward Message
+//   //
+//   // Receive               Example
+//   // [toUserID, text]      [2, "Hello, World!"]
+//   //
+//   // Send                  Example
+//   // [fromUserID, text]    [1, "Hello, World!"]
+//   webSocket.on("message", function (message) {
+//     console.log("received from " + userID + ": " + message);
+//     const objectSentFromClient = JSON.parse(message);
+//    const toUserWebSocket = webSockets[objectSentFromClient.receiverUserId];
+//      if (toUserWebSocket) {
+//        const messageToBeSent = JSON.stringify({
+//          senderUserId: userID,
+//          youCanAddAnythingHere: "this is a normal object",
+//          anotherArbitraryData: 1231232,
+//        });
 
-       toUserWebSocket.send(messageToBeSent);
-     }
-  });
+//        toUserWebSocket.send(messageToBeSent);
+//      }
+//   });
 
-  webSocket.on("close", function () {
-    delete webSockets[userID];
-    console.log("deleted: " + userID);
-  });
-});
+//   webSocket.on("close", function () {
+//     delete webSockets[userID];
+//     console.log("deleted: " + userID);
+//   });
+// });
 
 app.use("/auth", authRoutes);
 app.use("/map", mapRoutes);
