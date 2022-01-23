@@ -9,6 +9,7 @@ class ProfilePage extends Component {
   state = {
     isLoading: true,
     userInfo: {},
+    message: "",
   };
   //   on mount get user info, also need to grab map info
   componentDidMount() {
@@ -27,6 +28,21 @@ class ProfilePage extends Component {
         });
         // return response;
       })
+      // .then((response) => {
+      //   // Create WebSocket connection.
+      //   const socket = new WebSocket("ws://localhost:8080");
+
+      //   // Connection opened
+      //   socket.addEventListener("open", function (event) {
+      //     console.log("Connected to ws server.");
+      //   });
+
+      //   // Listen for messages
+      //   socket.addEventListener("message", function (event) {
+      //     console.log("Message from server ", event.data);
+      //   });
+      // })
+
       // .then((response) => {
       //   // Create WebSocket connection.
       //   const socket = new WebSocket(
@@ -53,11 +69,30 @@ class ProfilePage extends Component {
         // on error redirect to home page
         this.props.history.push("/");
       });
+    // Create WebSocket connection.
+    const socket = new WebSocket("ws://localhost:8080");
+
+    // Connection opened
+    socket.addEventListener("open", function (event) {
+      console.log("Connected to ws server.");
+    });
+
+    // Listen for messages
+    socket.addEventListener("message", function (event) {
+      console.log("Message from server ", event.data);
+    });
+    const sendMessage = () => {
+      socket.send(`${this.state.message} ${this.state.userInfo.username}`);
+    };
   }
 
   join = (e) => {
     e.preventDefault();
-    document.location.href = "/";
+    this.setState({
+      message: "Request to Join.",
+    });
+    // console.log(this.state.message);
+    // document.location.href = "/";
     // instead send invite to user on map marker
   };
   handleSignOut = (e) => {
@@ -81,7 +116,7 @@ class ProfilePage extends Component {
       <div>
         <h1>Hello {userInfo.name}</h1>
         <button onClick={this.handleSignOut}>sign out</button>
-        <Map handleJoin={this.join} userInfo={this.state.userInfo} />
+        <Map handleJoin={this.sendMessage} userInfo={this.state.userInfo} />
       </div>
     );
   }

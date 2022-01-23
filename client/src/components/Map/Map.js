@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
-import Popup from "../Popup/Popup";
 import ReactDOM from "react-dom";
 
 mapboxgl.accessToken =
@@ -18,11 +17,6 @@ class Map extends Component {
   };
 
   componentDidMount() {
-    const popCard = document.createElement("div");
-    popCard.className = "popup-container";
-
-    ReactDOM.render(<Popup />, popCard);
-
     // display map
     const map = new mapboxgl.Map({
       container: this.mapContainer,
@@ -70,14 +64,28 @@ class Map extends Component {
       })
       .then((res) => {
         console.log(res.data);
+
         res.data.forEach((element) => {
+          const innerHtmlContent = `<div><h1>Username: ${element.username}</h1>
+      <p>Name: ${element.name}</p>
+      <p>Number of children:${element.numberOfChildren}</p>
+      <p>Children age group: ${element.childrenAgeGroup}</p>
+      </div>`;
+          const divElement = document.createElement("div");
+          const joinBtn = document.createElement("div");
+          joinBtn.innerHTML = "<button>Join</button>";
+          divElement.innerHTML = innerHtmlContent;
+          divElement.appendChild(joinBtn);
+          joinBtn.addEventListener("click", (e) => {
+            console.log("join button clicked by" + element.username);
+          });
           const marker = new mapboxgl.Marker()
             .setLngLat([element.lng, element.lat])
             .setPopup(
               new mapboxgl.Popup({
                 closeOnClick: false,
                 offset: 30,
-              }).setDOMContent(popCard)
+              }).setDOMContent(divElement)
             )
             .addTo(map);
         });
@@ -95,15 +103,18 @@ class Map extends Component {
   }
 
   render() {
-    console.log(this.props.userInfo.name);
+    console.log(this.props);
     // if (this.state.lat === null && this.state.lng === null) {
     //   return <p>Loading...</p>;
     // }
     return (
-      <div
-        ref={(el) => (this.mapContainer = el)}
-        style={{ width: "100%", height: "100vh" }}
-      ></div>
+      <div>
+        <button onClick={this.props.handleJoin}>Join</button>
+        <div
+          ref={(el) => (this.mapContainer = el)}
+          style={{ width: "100%", height: "100vh" }}
+        ></div>
+      </div>
     );
   }
 }

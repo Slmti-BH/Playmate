@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 6060;
 
 // create ws server
 const wss = new WebSocket.Server({ server: server });
-const webSockets = {};
+// const webSockets = {};
 
 // cors middle ware to allow access to requests from client URL
 app.use(
@@ -21,6 +21,17 @@ app.use(
 );
 app.use(express.json());
 
+wss.on("connection", function connection(ws) {
+  console.log("New client connected.");
+  ws.on("message", function incoming(message) {
+    console.log("received: %s", message);
+    wss.clients.forEach(function each(client) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+  });
+});
 // // CONNECT /:userID
 // // wscat -c ws://localhost:5000/1
 // wss.on("connection", function (webSocket, request) {
