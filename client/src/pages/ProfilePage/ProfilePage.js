@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import Map from "../../components/Map/Map";
 import axios from "axios";
+import logo from "../../assets/images/logo.PNG";
+import avatar from "../../assets/images/Circle-icons-profile.svg";
+import "./ProfilePage.scss";
 
 const baseUrl = "http://localhost:8080/auth";
 const profileUrl = `${baseUrl}/profile`;
@@ -108,15 +111,33 @@ class ProfilePage extends Component {
     document.location.href = "/";
   };
   render() {
-    console.log(this.props);
+    console.log(this.state.userInfo);
     const { isLoading, userInfo } = this.state;
     return isLoading ? (
       <h1>Loading...</h1>
     ) : (
       <div>
-        <h1>Hello {userInfo.name}</h1>
-        <button onClick={this.handleSignOut}>sign out</button>
-        <Map handleJoin={this.sendMessage} userInfo={this.state.userInfo} />
+        <div className="user-flex-container">
+          <div className="home__logo-container">
+            <img className="home__logo-img" src={logo} alt="" />
+          </div>
+          <div className="user-container">
+            <div className="user-img-container">
+              <img
+                className="user-img"
+                src={avatar}
+                alt="User head shot image"
+              />
+            </div>
+            <h1 className="username">{userInfo.name}</h1>
+          </div>
+          <button className="sign-out-btn" onClick={this.handleSignOut}>
+            sign out
+          </button>
+        </div>
+        <div className="map-container">
+          <Map handleJoin={this.sendMessage} userInfo={this.state.userInfo} />
+        </div>
       </div>
     );
   }

@@ -20,6 +20,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(express.static("public"));
 
 wss.on("connection", function connection(ws) {
   console.log("New client connected.");
