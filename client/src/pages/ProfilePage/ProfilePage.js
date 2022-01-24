@@ -4,6 +4,7 @@ import axios from "axios";
 import logo from "../../assets/images/logo.PNG";
 import avatar from "../../assets/images/Circle-icons-profile.svg";
 import "./ProfilePage.scss";
+import Notes from "../../components/Notes/Notes";
 
 const baseUrl = "http://localhost:8080/auth";
 const profileUrl = `${baseUrl}/profile`;
@@ -13,6 +14,7 @@ class ProfilePage extends Component {
     isLoading: true,
     userInfo: {},
     message: "",
+    showModal: true,
   };
   //   on mount get user info, also need to grab map info
   componentDidMount() {
@@ -110,6 +112,20 @@ class ProfilePage extends Component {
     sessionStorage.clear();
     document.location.href = "/";
   };
+
+  // NotesModal
+  handleShowModal=(e)=>{
+    e.preventDefault();
+    this.setState({
+      showModal:true
+    })
+  }
+
+  handleHideModal=()=>{
+      this.setState({
+        showModal: false,
+      });
+  }
   render() {
     console.log(this.state.userInfo);
     const { isLoading, userInfo } = this.state;
@@ -121,6 +137,7 @@ class ProfilePage extends Component {
           <div className="home__logo-container">
             <img className="home__logo-img" src={logo} alt="" />
           </div>
+          <button onClick={this.sendMessage}>Join</button>
           <div className="user-container">
             <div className="user-img-container">
               <img
@@ -131,12 +148,32 @@ class ProfilePage extends Component {
             </div>
             <h1 className="username">{userInfo.name}</h1>
           </div>
+
           <button className="sign-out-btn" onClick={this.handleSignOut}>
             sign out
           </button>
         </div>
+        <div className="profile-modal-container">
+          <div className="profile-modal-inner-container">
+            <Notes
+              showModal={this.state.showModal}
+              handleHideModal={this.handleHideModal}
+            />
+            <button
+              className="add-notes-button"
+              type="button"
+              onClick={this.handleShowModal}
+            >
+              Add Notes
+            </button>
+          </div>
+        </div>
         <div className="map-container">
-          <Map handleJoin={this.sendMessage} userInfo={this.state.userInfo} />
+          <Map
+            handleJoin={this.sendMessage}
+            userInfo={this.state.userInfo}
+            sendMessage={this.sendMessage}
+          />
         </div>
       </div>
     );

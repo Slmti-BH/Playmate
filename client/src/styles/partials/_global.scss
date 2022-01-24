@@ -12,15 +12,10 @@ body {
   font-family: "avenir", Arial, Helvetica, sans-serif;
   background-color: #365b6d;
 }
+
+input,
+textarea,
 button {
-  background-color: #365b6d;
-  outline: none;
-  border: 1px solid #f0972d;
-  border-radius: 20px;
-  color: white;
-  display: block;
-}
-input {
   background-color: #365b6d;
   outline: none;
   border: 1px solid #f0972d;

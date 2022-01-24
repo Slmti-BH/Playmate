@@ -4,7 +4,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
 import ReactDOM from "react-dom";
-import "./Map.scss"
+import "./Map.scss";
 
 mapboxgl.accessToken =
   "pk.eyJ1Ijoic2VsYW1hd2l0LWhhaWxlbWFyaWFtIiwiYSI6ImNreWt2ZXdnZzI2aGgyd3Focjc5MDV3NHIifQ.d734Xg2hfTeIcZkjR5MTaA";
@@ -111,7 +111,8 @@ class Map extends Component {
     return (
       <div>
         {/* <button onClick={this.props.handleJoin}>Join</button> */}
-        <div className="mapbox-container"
+        <div
+          className="mapbox-container"
           ref={(el) => (this.mapContainer = el)}
           style={{ width: "100%", height: "80vh" }}
         ></div>
