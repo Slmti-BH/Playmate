@@ -1,0 +1,38 @@
+@use "../../styles/partials/global" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/variables" as *;
+
+.sign-in-form-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.sign-in-form{
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    &__input{
+        width: 180px;
+        height: 25px;
+        padding: 0.5rem 1rem;
+        margin-bottom: 1rem;
+    }
+    &__submit-btn{
+       margin-bottom: 0.5rem;
+       width: 100px;
+        height: 25px;
+       align-self: center;
+    //    align-self: center;
+    }
+    &__register-btn{
+        @extend .sign-in-form__submit-btn;
+        align-self: center;
+    }
+}

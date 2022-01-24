@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import SignInForm from "../../components/SignInForm/SignInForm";
 import "./HomePage.scss";
+import slider1 from "../../assets/images/slider1.jpg";
+import logo from "../../assets/images/logo.PNG";
 
 class Homepage extends Component {
   state = {
@@ -30,15 +32,25 @@ class Homepage extends Component {
   render() {
     const { isLoggedIn, isSignedUp } = this.state;
     return (
-      <div>
-        <div>
-          <h1>logo</h1>
+      <div className="home">
+        <div className="home__logo-container">
+          <img className="home__logo-img" src={logo} alt="" />
         </div>
-        <p>The more we get together, the happier we'll be!</p>
-
-        <Link to={this.outputLink()}>
-          <button>Find playmate</button>
-        </Link>
+        <div className="home__slider-container">
+          <div className="home__slider-img-container">
+            <img className="home__slider-img" src={slider1} alt="" />
+          </div>
+          <div className="home__text-container">
+            <p className="home__text">
+              The more we get together, the happier we'll be!
+            </p>
+          </div>
+        </div>
+        <div className="home__btn-container">
+          <Link to={this.outputLink()}>
+            <button className="home__btn">Find playmate</button>
+          </Link>
+        </div>
       </div>
     );
   }

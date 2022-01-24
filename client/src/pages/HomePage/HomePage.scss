@@ -3,6 +3,88 @@
 @use "../../styles/partials/typography" as *;
 @use "../../styles/partials/variables" as *;
 
-body {
-//   background-color: #365b6d;
+.home {
+  background-color: #365b6d;
+  &__slider-img-container {
+    width: calc(100% - 2rem);
+    margin-left: 1rem;
+    @include tablet {
+      width: calc(100% - 5rem);
+      margin-left: 2.5rem;
+    }
+    @include desktop {
+      width: calc(100% - 9rem);
+      margin-left: 4.5rem;
+    }
+
+    // border-radius: 4px;
+  }
+  &__logo-container {
+    width: 90px;
+    height: 90px;
+    @include tablet {
+      width: 110px;
+      height: 110px;
+      margin-left: 0.8rem;
+    }
+    @include desktop{
+      width: 130px;
+      height: 130px;
+      margin-left: 2.5rem;
+    }
+  }
+  &__logo-img {
+    width: 100%;
+    object-fit: cover;
+  }
+  &__slider-img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  &__slider-container {
+    position: relative;
+    // opacity: 0.7;
+  }
+  &__text-container {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 70%;
+    left: 50%;
+
+    // need to center this
+  }
+  &__text {
+    color: white;
+    // font-weight: 700;
+    font-size: 25px;
+    // border: 1px solid #F0972D;
+    text-align: center;
+    @include tablet {
+      font-size: 38px;
+    }
+    @include desktop{
+      font-size: 48px;
+    }
+  }
+  &__btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__btn {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    height: 35px;
+    width: 120px;
+    @include tablet {
+      margin-top: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    @include desktop{
+       margin-top: 2.5rem;
+      margin-bottom: 2rem;
+    }
+  }
 }
