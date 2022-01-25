@@ -78,7 +78,11 @@ class Map extends Component {
           divElement.innerHTML = innerHtmlContent;
           divElement.appendChild(joinBtn);
           joinBtn.addEventListener("click", (e) => {
-            console.log("join button clicked by" + element.username);
+            // this.props.history.push("/profile");
+            this.props.handleJoin();
+            document.location.href = "/profile";
+
+            // console.log("join button clicked by" + element.username);
           });
           const marker = new mapboxgl.Marker()
             .setLngLat([element.lng, element.lat])

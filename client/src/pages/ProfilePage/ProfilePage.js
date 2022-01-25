@@ -5,16 +5,19 @@ import logo from "../../assets/images/logo.PNG";
 import avatar from "../../assets/images/Circle-icons-profile.svg";
 import "./ProfilePage.scss";
 import Notes from "../../components/Notes/Notes";
+import { io } from "socket.io-client";
 
 const baseUrl = "http://localhost:8080/auth";
 const profileUrl = `${baseUrl}/profile`;
+
+const socket = io("http://127.0.0.1:8080");
 
 class ProfilePage extends Component {
   state = {
     isLoading: true,
     userInfo: {},
-    message: "",
-    showModal: true,
+    message: [],
+    showModal: false,
   };
   //   on mount get user info, also need to grab map info
   componentDidMount() {
@@ -33,73 +36,115 @@ class ProfilePage extends Component {
         });
         // return response;
       })
-      // .then((response) => {
-      //   // Create WebSocket connection.
-      //   const socket = new WebSocket("ws://localhost:8080");
-
-      //   // Connection opened
-      //   socket.addEventListener("open", function (event) {
-      //     console.log("Connected to ws server.");
-      //   });
-
-      //   // Listen for messages
-      //   socket.addEventListener("message", function (event) {
-      //     console.log("Message from server ", event.data);
-      //   });
+      // .then(response=>{
+      //   const socket = io("http://127.0.0.1:8080");
       // })
 
-      // .then((response) => {
-      //   // Create WebSocket connection.
-      //   const socket = new WebSocket(
-      //     `ws://localhost:8080?userId=${this.state.userInfo.id}`
-      //   );
-
-      //   // Connection opened
-      //   socket.addEventListener("open", function (event) {
-      //     socket.send(
-      //       JSON.stringify({
-      //         receiverUserId: "user-id-of-the-receiver",
-      //         myRandomMessage: "randomMessage",
-      //       })
-      //     );
-      //   });
-
-      //   // Listen for messages
-      //   socket.addEventListener("message", function (event) {
-      //     console.log("Message from server ", event.data);
-      //   });
-      // })
       .catch((err) => {
         console.log(err);
         // on error redirect to home page
         this.props.history.push("/");
       });
-    // Create WebSocket connection.
-    const socket = new WebSocket("ws://localhost:8080");
-
-    // Connection opened
-    socket.addEventListener("open", function (event) {
-      console.log("Connected to ws server.");
+    socket.on("connect", () => {
+      console.log("connected " + socket.id);
     });
-
-    // Listen for messages
-    socket.addEventListener("message", function (event) {
-      console.log("Message from server ", event.data);
+    socket.on("got-message", (message) => {
+      this.displayMessage(message);
     });
-    const sendMessage = () => {
-      socket.send(`${this.state.message} ${this.state.userInfo.username}`);
-    };
+    socket.on("accept-message", (message) => {
+      this.DisplayResponseMessage(message);
+    });
+    socket.on("decline-message", (message) => {
+      this.DisplayResponseMessage(message);
+    });
   }
 
-  join = (e) => {
-    e.preventDefault();
-    this.setState({
-      message: "Request to Join.",
+  DisplayResponseMessage = (message) => {
+    const div = document.createElement("div");
+    div.classList.add("msg-container");
+    div.innerText = message;
+    const ResCloseBtn = document.createElement("button");
+    // ResCloseBtn.classList.add("Res-msg-close-btn");
+    ResCloseBtn.innerText = "x";
+    ResCloseBtn.classList.add("msg-close-btn");
+    ResCloseBtn.addEventListener("click", (e) => {
+      document.location.href = "/profile";
     });
-    // console.log(this.state.message);
-    // document.location.href = "/";
-    // instead send invite to user on map marker
+    div.appendChild(ResCloseBtn);
+    document.getElementById("message-container").appendChild(div);
   };
+
+  // to display message
+  displayMessage = (message) => {
+    const div = document.createElement("div");
+    div.classList.add("msg-container");
+    const btnContainerDiv = document.createElement("div");
+    btnContainerDiv.classList.add("msg-btn-container-div");
+    const acceptBtn = document.createElement("button");
+    acceptBtn.classList.add("msg-btn");
+    acceptBtn.innerText = "Accept";
+
+    const declineBtn = document.createElement("button");
+    declineBtn.classList.add("msg-btn");
+    declineBtn.innerText = "Decline";
+    acceptBtn.addEventListener("click", (e) => {
+      this.handleAcceptMessage();
+      document.location.href = "/profile";
+    });
+    declineBtn.addEventListener("click", (e) => {
+      this.handleDeclineMessage();
+      document.location.href = "/profile";
+    });
+    const closeBtn = document.createElement("button");
+    closeBtn.classList.add("msg-close-btn");
+    closeBtn.innerText = "x";
+    closeBtn.addEventListener("click", (e) => {
+      document.location.href = "/profile";
+    });
+    div.innerText = message;
+    btnContainerDiv.appendChild(acceptBtn);
+    btnContainerDiv.appendChild(declineBtn);
+    div.appendChild(btnContainerDiv);
+    div.appendChild(closeBtn);
+    document.getElementById("message-container").appendChild(div);
+  };
+
+  handleMessage = (e) => {
+    // e.preventDefault();
+    socket.emit(
+      "join-req",
+      `Request to join from  ${this.state.userInfo.name}.
+       Number of children : ${this.state.userInfo.numberOfChildren}
+       Children age group : ${this.state.userInfo.childrenAgeGroup}`
+    );
+    // this.props.history.push("/profile");
+  };
+
+  handleAcceptMessage = () => {
+    socket.emit(
+      "accept-sent",
+      `${this.state.userInfo.name} accepted your request to join.
+           FYI: 
+       Number of children : ${this.state.userInfo.numberOfChildren}
+       Children age group : ${this.state.userInfo.childrenAgeGroup}`
+    );
+  };
+
+  handleDeclineMessage = () => {
+    socket.emit(
+      "decline-sent",
+      `${this.state.userInfo.name} did not accept your request to join. Please try again later.`
+    );
+  };
+
+  // handleMessageReceived = (e) => {
+  //   socket.on("got-message", (message) => {
+  //     this.setState({
+  //       message: [message],
+  //     });
+  //   });
+  // };
+
   handleSignOut = (e) => {
     e.preventDefault();
     //  delete map data for user
@@ -114,18 +159,18 @@ class ProfilePage extends Component {
   };
 
   // NotesModal
-  handleShowModal=(e)=>{
+  handleShowModal = (e) => {
     e.preventDefault();
     this.setState({
-      showModal:true
-    })
-  }
+      showModal: true,
+    });
+  };
 
-  handleHideModal=()=>{
-      this.setState({
-        showModal: false,
-      });
-  }
+  handleHideModal = () => {
+    this.setState({
+      showModal: false,
+    });
+  };
   render() {
     console.log(this.state.userInfo);
     const { isLoading, userInfo } = this.state;
@@ -137,7 +182,7 @@ class ProfilePage extends Component {
           <div className="home__logo-container">
             <img className="home__logo-img" src={logo} alt="" />
           </div>
-          <button onClick={this.sendMessage}>Join</button>
+
           <div className="user-container">
             <div className="user-img-container">
               <img
@@ -152,6 +197,10 @@ class ProfilePage extends Component {
           <button className="sign-out-btn" onClick={this.handleSignOut}>
             sign out
           </button>
+        </div>
+        <div className="alert-container">
+          <span className="bell-emoji">🔔</span>{" "}
+          <div id="message-container"></div>
         </div>
         <div className="profile-modal-container">
           <div className="profile-modal-inner-container">
@@ -169,11 +218,7 @@ class ProfilePage extends Component {
           </div>
         </div>
         <div className="map-container">
-          <Map
-            handleJoin={this.sendMessage}
-            userInfo={this.state.userInfo}
-            sendMessage={this.sendMessage}
-          />
+          <Map handleJoin={this.handleMessage} userInfo={this.state.userInfo} />
         </div>
       </div>
     );

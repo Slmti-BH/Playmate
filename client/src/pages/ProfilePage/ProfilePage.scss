@@ -102,3 +102,60 @@
     font-size: 0.8rem;
   }
 }
+.alert-container {
+  color: white;
+  margin: 0 1rem;
+  @include tablet {
+    margin: 0 2.5rem 1rem;
+  }
+  @include desktop {
+    margin: 0 4.5rem 1rem;
+  }
+}
+.bell-emoji {
+  display: block;
+  margin-bottom: 0.5rem;
+  @include tablet {
+    font-size: 28px;
+    margin-bottom: 1rem;
+  }
+  @include desktop {
+    font-size: 30px;
+  }
+}
+.msg-btn-container-div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.msg-btn {
+  width: 70px;
+  height: 25px;
+  padding: 0.25rem;
+  margin: 0.5rem 1rem 0 0;
+}
+
+.msg-container {
+  position: relative;
+  width: 60%;
+  height: 110px;
+  padding: 0.5rem;
+  border: 1px solid white;
+  @include tablet {
+    width: 40%;
+    padding: 1rem;
+    height: 120px;
+  }
+  @include desktop {
+    width: 30%;
+    height: 120px;
+    padding: 1rem;
+  }
+}
+.msg-close-btn {
+  position: absolute;
+  top: 0;
+  right: 0rem;
+}
+
+
