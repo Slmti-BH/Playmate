@@ -68,10 +68,11 @@ class Map extends Component {
 
         res.data.forEach((element) => {
           const innerHtmlContent = `<div><h1>Username: ${element.username}</h1>
-      <p>Name: ${element.name}</p>
-      <p>Number of children:${element.numberOfChildren}</p>
-      <p>Children age group: ${element.childrenAgeGroup}</p>
-      </div>`;
+          <p>Name: ${element.name}</p>
+          <p>Number of children:${element.numberOfChildren}</p>
+          <p>Children age group: ${element.childrenAgeGroup}</p>
+          <p>Notes: ${element.notes}</p>
+          </div>`;
           const divElement = document.createElement("div");
           const joinBtn = document.createElement("div");
           joinBtn.innerHTML = "<button>Join</button>";

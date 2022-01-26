@@ -34,12 +34,16 @@ class Notes extends Component {
   };
   onEmojiClick = (e, emojiObject) => {};
   render() {
-    console.log(this.props.showModal);
+    console.log(this.props);
 
     return this.props.showModal ? (
       <div className="notes-modal-container">
         <div className="notes-modal-forms-container">
-          <form className="notes-modal-form" action="">
+          <form
+            className="notes-modal-form"
+            action=""
+            onSubmit={this.props.handleNotesSubmit}
+          >
             <textarea
               className="notes-modal-text"
               name="notesInput"

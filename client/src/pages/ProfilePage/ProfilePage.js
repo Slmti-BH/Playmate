@@ -17,7 +17,7 @@ class ProfilePage extends Component {
     isLoading: true,
     userInfo: {},
     message: [],
-    showModal: false,
+    showModal: true,
   };
   //   on mount get user info, also need to grab map info
   componentDidMount() {
@@ -34,17 +34,14 @@ class ProfilePage extends Component {
           isLoading: false,
           userInfo: response.data,
         });
-        // return response;
       })
-      // .then(response=>{
-      //   const socket = io("http://127.0.0.1:8080");
-      // })
-
       .catch((err) => {
         console.log(err);
         // on error redirect to home page
         this.props.history.push("/");
       });
+
+    // connect to socket.io server
     socket.on("connect", () => {
       console.log("connected " + socket.id);
     });
@@ -171,6 +168,21 @@ class ProfilePage extends Component {
       showModal: false,
     });
   };
+
+  handleNotesSubmit = (e) => {
+    e.preventDefault();
+    const notesInput = e.target.notesInput.value;
+    console.log(notesInput);
+    axios
+      .put(`http://localhost:8080/map/${this.state.userInfo.username}/edit`, {
+        notes: notesInput,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+
+    e.target.reset();
+    // document.location.href = "/profile";
+  };
   render() {
     console.log(this.state.userInfo);
     const { isLoading, userInfo } = this.state;
@@ -185,11 +197,7 @@ class ProfilePage extends Component {
 
           <div className="user-container">
             <div className="user-img-container">
-              <img
-                className="user-img"
-                src={avatar}
-                alt="User head shot image"
-              />
+              <img className="user-img" src={avatar} alt="User head shot." />
             </div>
             <h1 className="username">{userInfo.name}</h1>
           </div>
@@ -205,6 +213,7 @@ class ProfilePage extends Component {
         <div className="profile-modal-container">
           <div className="profile-modal-inner-container">
             <Notes
+              handleNotesSubmit={this.handleNotesSubmit}
               showModal={this.state.showModal}
               handleHideModal={this.handleHideModal}
             />

@@ -139,7 +139,25 @@ mapRoutes.delete("/:username", (req, res) => {
   console.log(filteredMapData);
 
   res.status(204).send("user deleted");
-  // res.status(204).json(user.username);
+});
+
+// add notes
+mapRoutes.put("/:username/edit", (req, res) => {
+  const mapData = readData();
+  const targetData = mapData.find(
+    (data) => data.username === req.params.username
+  );
+  if (!targetData) {
+    return res.status(404).send("The user is not found.");
+  }
+  const notesObj = { notes: req.body.notes };
+  delete targetData.notes;
+  const updatedData = { ...notesObj, ...targetData };
+
+  mapData.splice(mapData.indexOf(targetData), 1, updatedData);
+
+  writeFile(mapData);
+  res.status(204).json(updatedData);
 });
 
 module.exports = mapRoutes;
