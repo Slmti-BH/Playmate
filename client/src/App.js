@@ -37,6 +37,7 @@ class App extends Component {
           }
         );
         sessionStorage.setItem("token", response.data.token);
+        sessionStorage.setItem("notes", "");
       })
       .catch((err) => {
         console.log(err);
@@ -94,13 +95,13 @@ class App extends Component {
                 document.location.href = "/sign-in";
               }
             );
-            // sessionStorage.setItem("token", response.data.token);
           })
           .catch((err) => {
             console.log(err);
             this.setState({ isLoginError: true, errorMessage: err });
+            alert(err);
           })
-      : alert("Make sure that password and confirm password match.");
+      : alert("Make sure password and confirm password match.");
   };
 
   signOut = (e) => {

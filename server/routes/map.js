@@ -89,7 +89,7 @@ const cleanUp = (req, res, next) => {
     next();
   }
 };
-mapRoutes.post("/", Validation, cleanUp, (req, res) => {
+mapRoutes.post("/", Validation, (req, res) => {
   const {
     lng,
     lat,
@@ -98,9 +98,13 @@ mapRoutes.post("/", Validation, cleanUp, (req, res) => {
     numberOfChildren,
     childrenAgeGroup,
     address,
-    notes,
   } = req.body;
   const mapData = readData();
+  console.log(mapData);
+  const user = mapData.find((data) => data.username === username);
+  // check user
+
+  const notesObj = user ? user.notes : "";
 
   const newData = {
     id: uuid(),
@@ -110,12 +114,16 @@ mapRoutes.post("/", Validation, cleanUp, (req, res) => {
     childrenAgeGroup: childrenAgeGroup,
     lng: lng,
     lat: lat,
-    address: address,
-    notes: notes,
+    notes: notesObj,
   };
+  console.log(newData);
+  const filteredMapData = mapData.filter((data) => data.username !== username);
+  filteredMapData.push(newData);
 
-  mapData.push(newData);
-  writeFile(mapData);
+  // mapData.splice(mapData.indexOf(user), 1, newData);
+  console.log(mapData);
+  writeFile(filteredMapData);
+
   res.json({ success: "true" });
 });
 

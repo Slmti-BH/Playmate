@@ -17,7 +17,7 @@ class ProfilePage extends Component {
     isLoading: true,
     userInfo: {},
     message: [],
-    showModal: true,
+    showModal: false,
   };
   //   on mount get user info, also need to grab map info
   componentDidMount() {
@@ -37,7 +37,7 @@ class ProfilePage extends Component {
       })
       .catch((err) => {
         console.log(err);
-        // on error redirect to home page
+        alert("Not authorized");
         this.props.history.push("/");
       });
 
@@ -61,7 +61,6 @@ class ProfilePage extends Component {
     div.classList.add("msg-container");
     div.innerText = message;
     const ResCloseBtn = document.createElement("button");
-    // ResCloseBtn.classList.add("Res-msg-close-btn");
     ResCloseBtn.innerText = "x";
     ResCloseBtn.classList.add("msg-close-btn");
     ResCloseBtn.addEventListener("click", (e) => {
@@ -107,14 +106,13 @@ class ProfilePage extends Component {
   };
 
   handleMessage = (e) => {
-    // e.preventDefault();
+  
     socket.emit(
       "join-req",
       `Request to join from  ${this.state.userInfo.name}.
        Number of children : ${this.state.userInfo.numberOfChildren}
        Children age group : ${this.state.userInfo.childrenAgeGroup}`
     );
-    // this.props.history.push("/profile");
   };
 
   handleAcceptMessage = () => {
@@ -134,13 +132,6 @@ class ProfilePage extends Component {
     );
   };
 
-  // handleMessageReceived = (e) => {
-  //   socket.on("got-message", (message) => {
-  //     this.setState({
-  //       message: [message],
-  //     });
-  //   });
-  // };
 
   handleSignOut = (e) => {
     e.preventDefault();
@@ -173,15 +164,24 @@ class ProfilePage extends Component {
     e.preventDefault();
     const notesInput = e.target.notesInput.value;
     console.log(notesInput);
-    axios
-      .put(`http://localhost:8080/map/${this.state.userInfo.username}/edit`, {
-        notes: notesInput,
-      })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
 
-    e.target.reset();
-    // document.location.href = "/profile";
+    notesInput
+      ? axios
+          .put(
+            `http://localhost:8080/map/${this.state.userInfo.username}/edit`,
+            {
+              notes: notesInput,
+            }
+          )
+          .then((res) => {
+            console.log(res);
+            e.target.reset();
+            this.setState({
+              showModal: false,
+            });
+          })
+          .catch((err) => console.log(err))
+      : alert("Please type your note.");
   };
   render() {
     console.log(this.state.userInfo);

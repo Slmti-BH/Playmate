@@ -40,7 +40,7 @@ class SignInForm extends Component {
               Login
             </button>
             <div className="sign-in-form__submit-btn">
-              <Link to="/register">
+              <Link to="/register" style={{ textDecoration: "none" }}>
                 <button className="sign-in-form__submit-btn" type="submit">
                   Register
                 </button>

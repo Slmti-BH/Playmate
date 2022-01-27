@@ -90,6 +90,7 @@ authRoutes.post("/sign-in", (req, res) => {
         username: user.username,
         numberOfChildren: user.numberOfChildren,
         childrenAgeGroup: user.childrenAgeGroup,
+        // notes:""
       },
       JWT_SECRET,
       {
@@ -131,5 +132,24 @@ const authorize = (req, res, next) => {
 authRoutes.get("/profile", authorize, (req, res) => {
   res.json(req.decoded);
 });
+
+// // add notes
+// authRoutes.put("/profile/:username/edit", (req, res) => {
+//   const authData = readData();
+//   const targetData = authData.find(
+//     (data) => data.username === req.params.username
+//   );
+//   if (!targetData) {
+//     return res.status(404).send("The user is not found.");
+//   }
+//   const notesObj = { notes: req.body.notes };
+//   delete targetData.notes;
+//   const updatedData = { ...notesObj, ...targetData };
+
+//   authData.splice(authData.indexOf(targetData), 1, updatedData);
+
+//   writeFile(authData);
+//   res.status(204).json(updatedData);
+// });
 
 module.exports = authRoutes;

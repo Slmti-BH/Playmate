@@ -45,7 +45,7 @@ class Map extends Component {
       .then((res) => {
         // make api call to post current position of user and details to map.json
         console.log(this.props.userInfo);
-        const { name, username, numberOfChildren, childrenAgeGroup } =
+        const { name, username, numberOfChildren, childrenAgeGroup} =
           this.props.userInfo;
         const body = {
           name: name,
@@ -54,6 +54,7 @@ class Map extends Component {
           childrenAgeGroup: childrenAgeGroup,
           lng: res.coords.longitude,
           lat: res.coords.latitude,
+          
         };
         return axios.post("http://localhost:8080/map/", body);
       })
@@ -72,6 +73,7 @@ class Map extends Component {
           <p>Number of children:${element.numberOfChildren}</p>
           <p>Children age group: ${element.childrenAgeGroup}</p>
           <p>Notes: ${element.notes}</p>
+          
           </div>`;
           const divElement = document.createElement("div");
           const joinBtn = document.createElement("div");

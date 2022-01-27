@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link} from "react-router-dom";
 import SignInForm from "../../components/SignInForm/SignInForm";
 import "./HomePage.scss";
 import slider1 from "../../assets/images/slider1.jpg";
@@ -47,7 +47,7 @@ class Homepage extends Component {
           </div>
         </div>
         <div className="home__btn-container">
-          <Link to={this.outputLink()}>
+          <Link to={this.outputLink()} style={{ textDecoration: "none" }}>
             <button className="home__btn">Find playmate</button>
           </Link>
         </div>
