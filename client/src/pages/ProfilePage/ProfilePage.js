@@ -56,6 +56,7 @@ class ProfilePage extends Component {
     });
   }
 
+  // to display response message
   DisplayResponseMessage = (message) => {
     const div = document.createElement("div");
     div.classList.add("msg-container");
@@ -106,7 +107,6 @@ class ProfilePage extends Component {
   };
 
   handleMessage = (e) => {
-  
     socket.emit(
       "join-req",
       `Request to join from  ${this.state.userInfo.name}.
@@ -119,7 +119,7 @@ class ProfilePage extends Component {
     socket.emit(
       "accept-sent",
       `${this.state.userInfo.name} accepted your request to join.
-           FYI: 
+           
        Number of children : ${this.state.userInfo.numberOfChildren}
        Children age group : ${this.state.userInfo.childrenAgeGroup}`
     );
@@ -131,7 +131,6 @@ class ProfilePage extends Component {
       `${this.state.userInfo.name} did not accept your request to join. Please try again later.`
     );
   };
-
 
   handleSignOut = (e) => {
     e.preventDefault();

@@ -20,8 +20,8 @@ app.use(
     origin: process.env.CLIENT_URL,
   })
 );
+
 app.use(express.json());
-app.use(express.static("public"));
 
 // io server
 io.on("connection", (socket) => {

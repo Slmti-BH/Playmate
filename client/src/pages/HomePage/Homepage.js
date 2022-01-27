@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Link} from "react-router-dom";
-import SignInForm from "../../components/SignInForm/SignInForm";
+import { Link } from "react-router-dom";
 import "./HomePage.scss";
-import slider1 from "../../assets/images/slider1.jpg";
+import slider9 from "../../assets/images/slider9.jpg";
 import logo from "../../assets/images/logo.PNG";
 
 class Homepage extends Component {
@@ -30,7 +29,6 @@ class Homepage extends Component {
   }
 
   render() {
-    const { isLoggedIn, isSignedUp } = this.state;
     return (
       <div className="home">
         <div className="home__logo-container">
@@ -38,7 +36,7 @@ class Homepage extends Component {
         </div>
         <div className="home__slider-container">
           <div className="home__slider-img-container">
-            <img className="home__slider-img" src={slider1} alt="" />
+            <img className="home__slider-img" src={slider9} alt="" />
           </div>
           <div className="home__text-container">
             <p className="home__text">

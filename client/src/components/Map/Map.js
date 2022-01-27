@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
-import ReactDOM from "react-dom";
 import "./Map.scss";
 
 mapboxgl.accessToken =
@@ -11,10 +9,9 @@ mapboxgl.accessToken =
 
 class Map extends Component {
   state = {
+    // need initial value for lng, lat to display map
     lng: -122.92219,
     lat: 49.2127,
-    zoom: 10,
-    currentCoordinates: [],
   };
 
   componentDidMount() {
@@ -23,7 +20,7 @@ class Map extends Component {
       container: this.mapContainer,
       style: "mapbox://styles/mapbox/streets-v11",
       center: [this.state.lng, this.state.lat],
-      zoom: this.state.zoom,
+      zoom: 10,
     });
 
     // use promise to get current user location to center the map
@@ -34,9 +31,8 @@ class Map extends Component {
     };
     getCoordinates()
       .then((res) => {
-        // console.log(res.coords);
         this.setState({
-          currentCoordinates: [res.coords.longitude, res.coords.latitude],
+          // use user current location to center the map
           lng: res.coords.longitude,
           lat: res.coords.latitude,
         });
@@ -45,7 +41,7 @@ class Map extends Component {
       .then((res) => {
         // make api call to post current position of user and details to map.json
         console.log(this.props.userInfo);
-        const { name, username, numberOfChildren, childrenAgeGroup} =
+        const { name, username, numberOfChildren, childrenAgeGroup } =
           this.props.userInfo;
         const body = {
           name: name,
@@ -54,19 +50,17 @@ class Map extends Component {
           childrenAgeGroup: childrenAgeGroup,
           lng: res.coords.longitude,
           lat: res.coords.latitude,
-          
         };
         return axios.post("http://localhost:8080/map/", body);
       })
       .then((res) => {
-        console.log(res);
+        //  get data to put marker pin for users on map
         return axios.get(
           `http://localhost:8080/map/${this.props.userInfo.username}`
         );
       })
       .then((res) => {
-        console.log(res.data);
-
+        // create popup for markers using setDomContent
         res.data.forEach((element) => {
           const innerHtmlContent = `<div><h1>Username: ${element.username}</h1>
           <p>Name: ${element.name}</p>
@@ -81,11 +75,8 @@ class Map extends Component {
           divElement.innerHTML = innerHtmlContent;
           divElement.appendChild(joinBtn);
           joinBtn.addEventListener("click", (e) => {
-            // this.props.history.push("/profile");
             this.props.handleJoin();
             document.location.href = "/profile";
-
-            // console.log("join button clicked by" + element.username);
           });
           const marker = new mapboxgl.Marker()
             .setLngLat([element.lng, element.lat])
@@ -97,7 +88,6 @@ class Map extends Component {
             )
             .addTo(map);
         });
-
         // Initialize the geolocate control.
         const geolocate = new mapboxgl.GeolocateControl({
           positionOptions: {
@@ -111,13 +101,8 @@ class Map extends Component {
   }
 
   render() {
-    console.log(this.props);
-    // if (this.state.lat === null && this.state.lng === null) {
-    //   return <p>Loading...</p>;
-    // }
     return (
       <div>
-        {/* <button onClick={this.props.handleJoin}>Join</button> */}
         <div
           className="mapbox-container"
           ref={(el) => (this.mapContainer = el)}

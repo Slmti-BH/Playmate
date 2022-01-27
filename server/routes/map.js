@@ -3,9 +3,6 @@ const mapRoutes = Router();
 const fs = require("fs");
 const { v4: uuid } = require("uuid");
 require("dotenv").config();
-const jwt = require("jsonwebtoken");
-
-const JWT_SECRET = process.env.JWT_SECRET;
 
 //to read from users.json
 const readData = () => {
@@ -16,32 +13,6 @@ const readData = () => {
 // to write to videos.json
 const writeFile = (mapData) => {
   fs.writeFileSync("./data/map.json", JSON.stringify(mapData));
-};
-
-// authorize middleware
-const authorize = (req, res, next) => {
-  // first check if headers contain authorization
-  if (!req.headers.authorization) {
-    return res.status(401).json({ message: "not authorized" });
-  }
-  // else check token in headers
-  const authToken = req.headers.authorization.split(" ")[1];
-
-  // decode content of token
-  jwt.verify(authToken, JWT_SECRET, (err, decoded) => {
-    console.log("authorize middleware :: JWT verification");
-    if (err) {
-      return res.status(401).json({ message: "not authorized" });
-    }
-    // check if token is expired
-    if (Date.now() > new Date(decoded.exp * 1000)) {
-      return res.status(401).json({ message: "token expired" });
-    }
-
-    // decoded contents should to be on req.decoded
-    req.decoded = decoded;
-    next();
-  });
 };
 
 // get all map data specific to user
@@ -55,6 +26,7 @@ mapRoutes.get("/:username", (req, res) => {
   }
   res.status(200).json(userMapData);
 });
+
 // validation middleware
 const Validation = (req, res, next) => {
   console.log(req.body);
@@ -76,33 +48,12 @@ const Validation = (req, res, next) => {
   }
 };
 
-// clean up previous posts for the user in map.json file
-const cleanUp = (req, res, next) => {
-  const mapData = readData();
-  const username = mapData.find((data) => data.username === req.body.username);
-  if (username) {
-    const filteredMapData = mapData.filter(
-      (data) => data.username !== req.body.username
-    );
-    writeFile(filteredMapData);
-  } else {
-    next();
-  }
-};
 mapRoutes.post("/", Validation, (req, res) => {
-  const {
-    lng,
-    lat,
-    username,
-    name,
-    numberOfChildren,
-    childrenAgeGroup,
-    address,
-  } = req.body;
+  const { lng, lat, username, name, numberOfChildren, childrenAgeGroup } =
+    req.body;
   const mapData = readData();
   console.log(mapData);
   const user = mapData.find((data) => data.username === username);
-  // check user
 
   const notesObj = user ? user.notes : "";
 
@@ -116,12 +67,9 @@ mapRoutes.post("/", Validation, (req, res) => {
     lat: lat,
     notes: notesObj,
   };
-  console.log(newData);
   const filteredMapData = mapData.filter((data) => data.username !== username);
   filteredMapData.push(newData);
 
-  // mapData.splice(mapData.indexOf(user), 1, newData);
-  console.log(mapData);
   writeFile(filteredMapData);
 
   res.json({ success: "true" });
@@ -143,9 +91,6 @@ mapRoutes.delete("/:username", (req, res) => {
   );
 
   writeFile(filteredMapData);
-  console.log(req.params.username);
-  console.log(filteredMapData);
-
   res.status(204).send("user deleted");
 });
 
