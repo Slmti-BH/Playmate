@@ -1,0 +1,161 @@
+@use "../../styles/partials/global" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/variables" as *;
+
+.user-img-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  @include tablet {
+    width: 50px;
+    height: 50px;
+  }
+}
+.user-img {
+  width: 100%;
+  object-fit: cover;
+}
+.user-img-container {
+  position: relative;
+}
+.username {
+  // margin-top: 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  position: absolute;
+  top: 60px;
+  @include tablet {
+    top: 75px;
+    font-size: 1rem;
+  }
+  @include desktop {
+    top: 85px;
+  }
+}
+.user-flex-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  @include tablet {
+    margin-bottom: 1rem;
+  }
+}
+.sign-out-btn {
+  width: 70px;
+  height: 20px;
+  margin: 0 1rem;
+  font-size: 0.7rem;
+  @include tablet {
+    width: 80px;
+    height: 28px;
+    margin: 0 2.5rem;
+    font-size: 0.8rem;
+  }
+  @include desktop {
+    margin-right: 4.5rem;
+  }
+}
+.user-container {
+  margin-left: auto;
+}
+// .map-container{
+//     margin-top: 0.5rem;
+//     width: calc(100% - 2rem);
+//     margin-left: 1rem;
+//     border: 1px solid;
+//     border-radius: 10px;
+//     height: 400px;
+// }
+.map-container {
+  margin: 1rem;
+  @include tablet {
+    margin: 0 2.5rem;
+  }
+  @include desktop {
+    margin: 0 4.5rem;
+  }
+}
+.profile-modal-container {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  margin-right: 1rem;
+  z-index: 1;
+  @include tablet {
+    margin-right: 2.5rem;
+  }
+  @include desktop {
+    margin-right: 4.5rem;
+  }
+}
+.profile-modal-inner-container {
+  position: relative;
+}
+.add-notes-button {
+  width: 85px;
+  height: 25px;
+  font-size: 0.7rem;
+  @include tablet {
+    width: 80px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+}
+.alert-container {
+  color: white;
+  margin: 0 1rem;
+  @include tablet {
+    margin: 0 2.5rem 1rem;
+  }
+  @include desktop {
+    margin: 0 4.5rem 1rem;
+  }
+}
+.bell-emoji {
+  display: block;
+  margin-bottom: 0.5rem;
+  @include tablet {
+    font-size: 28px;
+    margin-bottom: 1rem;
+  }
+  @include desktop {
+    font-size: 30px;
+  }
+}
+.msg-btn-container-div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.msg-btn {
+  width: 70px;
+  height: 25px;
+  padding: 0.25rem;
+  margin: 0.5rem 1rem 0 0;
+}
+
+.msg-container {
+  position: relative;
+  width: 60%;
+  height: 110px;
+  padding: 0.5rem;
+  border: 1px solid white;
+  @include tablet {
+    width: 40%;
+    padding: 1rem;
+    height: 120px;
+  }
+  @include desktop {
+    width: 30%;
+    height: 120px;
+    padding: 1rem;
+  }
+}
+.msg-close-btn {
+  position: absolute;
+  top: 0;
+  right: 0rem;
+}
+
+

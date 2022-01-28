@@ -1,0 +1,15 @@
+// to import breakpoint variables
+@use "./variables" as *;
+
+// mixin media queries for responsive design at each breakpoint
+@mixin desktop {
+  @media screen and (min-width: $desktop-breakpoint) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media screen and (min-width: $tablet-breakpoint) {
+    @content;
+  }
+}
