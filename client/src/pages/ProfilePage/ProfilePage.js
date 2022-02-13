@@ -5,6 +5,7 @@ import logo from "../../assets/images/logo.PNG";
 import avatar from "../../assets/images/Circle-icons-profile.svg";
 import "./ProfilePage.scss";
 import Notes from "../../components/Notes/Notes";
+import ProfileInfo from "../../components/ProfileInfo/ProfileInfo";
 import { io } from "socket.io-client";
 
 const baseUrl = "http://localhost:8080/auth";
@@ -18,6 +19,7 @@ class ProfilePage extends Component {
     userInfo: {},
     message: [],
     showModal: false,
+    showProfileModal: false,
   };
   //   on mount get user info, also need to grab map info
   componentDidMount() {
@@ -182,6 +184,21 @@ class ProfilePage extends Component {
           .catch((err) => console.log(err))
       : alert("Please type your note.");
   };
+
+  // profile modal
+  handleShowProfileModal = (e) => {
+    e.preventDefault();
+    this.setState({
+      showProfileModal: true,
+    });
+  };
+
+  handleHideProfileModal = () => {
+    this.setState({
+      showProfileModal: false,
+    });
+  };
+
   render() {
     console.log(this.state.userInfo);
     const { isLoading, userInfo } = this.state;
@@ -193,12 +210,17 @@ class ProfilePage extends Component {
           <div className="home__logo-container">
             <img className="home__logo-img" src={logo} alt="" />
           </div>
-
-          <div className="user-container">
-            <div className="user-img-container">
-              <img className="user-img" src={avatar} alt="User head shot." />
+          <div className="profile-info-modal-container">
+            <ProfileInfo />
+            <div
+              className="user-container"
+              onClick={this.handleShowProfileModal}
+            >
+              <div className="user-img-container">
+                <img className="user-img" src={avatar} alt="User head shot." />
+              </div>
+              <h1 className="username">{userInfo.name}</h1>
             </div>
-            <h1 className="username">{userInfo.name}</h1>
           </div>
 
           <button className="sign-out-btn" onClick={this.handleSignOut}>
