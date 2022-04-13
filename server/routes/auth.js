@@ -130,4 +130,56 @@ authRoutes.get("/profile", authorize, (req, res) => {
   res.json(req.decoded);
 });
 
+// edit name
+authRoutes.put("/:username/editname", (req, res) => {
+  const authData = readData();
+  const targetUser = authData.find(
+    (user) => user.username === req.params.username
+  );
+  if (!targetUser) {
+    return res.status(404).send("The user is not found.");
+  }
+  const nameObj = { name: req.body.name };
+  delete targetUser.name;
+  updatedUser = { ...nameObj, ...targetUser };
+  authData.splice(authData.indexOf(targetUser), 1, updatedUser);
+  writeFile(authData);
+  res.status(204).json(updatedUser);
+});
+
+// edit number of children
+authRoutes.put("/:username/editnumberofchildren", (req, res) => {
+  const authData = readData();
+  const targetUser = authData.find(
+    (user) => user.username === req.params.username
+  );
+  if (!targetUser) {
+    return res.status(404).send("The user is not found.");
+  }
+  const numberOfChildrenObj = { numberOfChildren: req.body.numberOfChildren };
+  delete targetUser.numberOfChildren;
+  updatedUser = { ...numberOfChildrenObj, ...targetUser };
+  authData.splice(authData.indexOf(targetUser), 1, updatedUser);
+  writeFile(authData);
+  res.status(204).json(updatedUser);
+});
+
+
+// edit children age group
+authRoutes.put("/:username/editchildrenagegroup", (req, res) => {
+  const authData = readData();
+  const targetUser = authData.find(
+    (user) => user.username === req.params.username
+  );
+  if (!targetUser) {
+    return res.status(404).send("The user is not found.");
+  }
+  const childrenAgeGroupObj = { childrenAgeGroup: req.body.childrenAgeGroup };
+  delete targetUser.childrenAgeGroup;
+  updatedUser = { ...childrenAgeGroupObj, ...targetUser };
+  authData.splice(authData.indexOf(targetUser), 1, updatedUser);
+  writeFile(authData);
+  res.status(204).json(updatedUser);
+});
+
 module.exports = authRoutes;

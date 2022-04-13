@@ -1,0 +1,27 @@
+@use "../../styles/partials/global" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/typography" as *;
+@use "../../styles/partials/variables" as *;
+
+.profile-info-page-container {
+  position: fixed;
+  top: 1rem;
+  background-color: white;
+  z-index: 10;
+  padding: 0.5rem;
+  right: 1rem;
+  width: 350px;
+  &__btn {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+  }
+  &__text {
+    display: block;
+    margin-right: 0.5rem;
+  }
+  &__input {
+    display: flex;
+    flex-direction: row;
+  }
+}

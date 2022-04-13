@@ -210,15 +210,22 @@ class ProfilePage extends Component {
           <div className="home__logo-container">
             <img className="home__logo-img" src={logo} alt="" />
           </div>
-          <div className="profile-info-modal-container">
-            <ProfileInfo />
-            <div
-              className="user-container"
-              onClick={this.handleShowProfileModal}
-            >
-              <div className="user-img-container">
+          <div className="user-container">
+            <div className="profile-info-container">
+              <ProfileInfo
+                showState={this.state.showProfileModal}
+                hideModal={this.handleHideProfileModal}
+                userInfo={this.state.userInfo}
+              />
+            </div>
+            <div className="inner-user-container">
+              <div
+                className="user-img-container"
+                onClick={this.handleShowProfileModal}
+              >
                 <img className="user-img" src={avatar} alt="User head shot." />
               </div>
+
               <h1 className="username">{userInfo.name}</h1>
             </div>
           </div>
